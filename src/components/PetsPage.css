@@ -62,8 +62,10 @@
 }
 
 .petImg {
-  max-height: 210px;
-  max-width: 318px;
+  max-height: 270px;
+  max-width: 315px;
+  width: auto;
+  height: auto;
 }
 
 .statusTitle {
@@ -98,7 +100,8 @@
 }
 .petStats {
   list-style-type: none;
-  padding-left: 9%;
+  padding-left: 6%;
+  padding-right: 3%;
   margin: 0;
 }
 .petStats li {

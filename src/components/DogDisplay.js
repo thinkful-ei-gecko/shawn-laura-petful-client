@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import config from '../config.js';
-import { Link } from 'react-router-dom';
 
 class DogDisplay extends Component {
-  static defaultProps = { dogs: [] };
+  static defaultProps = { dog: [] };
 
   constructor(props) {
     super(props);
@@ -13,7 +12,26 @@ class DogDisplay extends Component {
     };
   }
 
-  componentDidMount(){
+  handleAdoptDog = () => {
+    let options = {
+      method: 'DELETE',
+      headers: { "Content-Type": "application/json" }
+    };
+    fetch(`${config.REACT_APP_API_BASE}/dog`, options)
+    .then(response => {
+      if(!response.ok) {
+        console.log('Error.');
+        throw new Error('Something went wrong'); //throw an error
+      }       
+      return response;
+    })
+    .then(response => response.json())
+    .catch(err => console.log('Error with request'))
+
+    this.displayNextDog();
+  }
+
+  displayNextDog(){
     fetch(`${config.REACT_APP_API_BASE}/dog`)
     .then(response => {
       if(!response.ok) {
@@ -30,13 +48,15 @@ class DogDisplay extends Component {
     .catch(err => {
       this.setState({ error: err.message });
     });
+
   }
 
+  componentDidMount(){
+    this.displayNextDog();
+  }
 
   render() {
-    
     const dog = this.state.dog;
-
 
     return (
       <div className='left-column2'>
@@ -56,11 +76,8 @@ class DogDisplay extends Component {
               <li><span className='statItem'>Story: </span>{dog.story}</li>
             </ul>
           </div>
-          <button type='submit' className='petsBtn smBtn adopt'>Adopt me!</button>
-          <div>
-            <button type='submit' className='petsBtn smBtn'>View previous</button>
-            <button type='submit' className='petsBtn smBtn'>View next</button>
-          </div>
+          <button type='submit' className='petsBtn smBtn adopt'
+            onClick={() => this.handleAdoptDog()}>Adopt me!</button>
         </div>
         <div className='columnF'>
           <img className='petImg' alt={dog.imageDescription} src={dog.imageURL} />
@@ -73,3 +90,10 @@ class DogDisplay extends Component {
 }
 
 export default DogDisplay;
+
+/* for future dev:
+          <div>
+            <button type='submit' className='petsBtn smBtn'>View previous</button>
+            <button type='submit' className='petsBtn smBtn'>View next</button>
+          </div>
+*/
