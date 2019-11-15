@@ -1,0 +1,84 @@
+* {
+  box-sizing: border-box;
+  }
+
+body {
+  background-image: url(../kitten.png);
+  background-size: cover;
+  background-position: center;
+  min-height: 500px;
+}
+h1 {
+  text-align: center;
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 2.8rem;
+  color: rgb(66, 66, 66);
+  background-color: rgba(212, 208, 208, 0.5);
+  width: 90%;
+  margin: 12px auto;
+  padding: 9px;
+}
+.row {
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+width: 100%;
+}
+
+.columnA {
+display: flex;
+flex-direction: column;
+flex-basis: 100%;
+flex: 5;
+}
+
+.left-column {
+height: 100px;
+}
+.columnB {
+display: flex;
+flex-direction: column;
+flex-basis: 100%;
+flex: 4;
+}
+.right-column {
+background-color: rgba(202, 234, 247, 0.4);
+height: 100%;
+margin-top: 15px;
+}
+
+.welcome{
+  font-size: 1.7rem;
+  font-weight: 600;
+  font-style: italic;
+  margin: 6px auto;
+}
+
+.appInfo {
+  font-size: 1.1rem;
+  width: 70%;
+  border-radius: 12px;
+  margin: 30px auto 6px auto;
+  text-align: center;
+  padding: 12px 18px;
+}
+
+.goTo {
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color:rgb(65, 65, 65);
+  font-size: 1.2rem;
+  font-weight: 600;
+  background-color:rgba(146, 146, 146, 0.5);
+  border: 2px solid rgb(197, 197, 197);
+  width: 70%;
+  max-width: 440px;
+  margin: 24px auto 12px auto;
+  text-align: center;
+  padding: 15px 0;
+}
+.goTo:hover {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+}
+.goTo:active {
+  background-color: rgba(146, 146, 146, 0.3);
+}
