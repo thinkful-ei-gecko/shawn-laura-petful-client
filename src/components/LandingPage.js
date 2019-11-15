@@ -25,7 +25,9 @@ class LandingPage extends Component{
             <p>The next cat or dog available for adoption 
                 is always the one that has been in our care the longest.
             </p>
-            <div className='goTo'>Continue</div>
+            <Link to='/pets'>
+              <div className='goTo'>Continue</div>
+            </Link>
         </div>
       </div>
 
