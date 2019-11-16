@@ -16,8 +16,8 @@ https://petfulv111.ljelias.now.sh
 This project was a one-day app building challenge of the Thinkful curriculum.
 
 ### Collaborators:
-  Shawn Collette
-  Laura Elias
+- Shawn Collette
+- Laura Elias
 
 ### This app is built with:
 - React

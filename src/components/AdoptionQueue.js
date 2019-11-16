@@ -9,6 +9,7 @@ class AdoptionQueue extends Component {
     super(props);
     this.state = {
       newAdopter: '',
+      nextToAdopt: '',
       error: ''
     };
   }
@@ -41,8 +42,54 @@ class AdoptionQueue extends Component {
     .catch(err => console.log('Error with request'))
   }
 
+  handleSendToBackOfQueue = () => {
+    let options = {
+      method: 'DELETE',
+      headers: { "Content-Type": "application/json" }
+    };
+    fetch(`${config.REACT_APP_API_BASE}/user`, options)
+    .then(response => {
+      if(!response.ok) {
+        console.log('Error.');
+        throw new Error('Something went wrong'); //throw an error
+      }       
+      return response;
+    })
+    .then(response => response.json())
+    .catch(err => console.log('Error with request'))
+
+    this.displayNextAdopter();
+  }
+
+  displayNextAdopter(){
+    fetch(`${config.REACT_APP_API_BASE}/user`)
+    .then(response => {
+      if(!response.ok) {
+        console.log('Error.');
+        throw new Error('Something went wrong'); //throw an error
+      }       
+      return response;
+    })
+    .then(response => response.json())
+    .then(data => {
+      const user = data;
+      this.setState({nextToAdopt: user});
+    })
+    .catch(err => {
+      this.setState({ error: err.message });
+    });
+
+  }
+
+  componentDidMount(){
+    this.displayNextAdopter();
+  }
+
 
   render() {
+
+    const nextUp = this.state.nextToAdopt;
+    console.log(nextUp);
 
     return (
       <div className='right-column2 adoptInfo'>
@@ -57,9 +104,14 @@ class AdoptionQueue extends Component {
         </form>
         <hr/>
 
-        <p>When it is your turn to adopt, your name will be displayed below.</p>
-        <p><strong>Next up to adopt:</strong></p>
-        <p>...</p>
+        <p>The next person in line to adopt will be displayed below.</p>
+        <div className='nextUp'>
+          <p><strong>Next up to adopt:</strong></p>
+          <p><em>--{nextUp}--</em></p>
+        </div>
+        When adopter's turn is over:
+        <button type='submit' className='petsBtn smBtn next'
+            onClick={() => this.handleSendToBackOfQueue()} >Remove from queue</button>
 
       </div>
     );
