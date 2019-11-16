@@ -5,6 +5,7 @@ import './LandingPage.css';
 class LandingPage extends Component {
   render() {
     return (<>
+    <div className='background'>
       <header>
         <h1>Petful</h1>
       </header>
@@ -32,6 +33,7 @@ class LandingPage extends Component {
 
         </section>
       </main>
+      </div>
     </>);
   }
 }

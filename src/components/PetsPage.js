@@ -4,13 +4,13 @@ import './PetsPage.css';
 import DogDisplay from './DogDisplay';
 import CatDisplay from './CatDisplay';
 import AdoptionQueue from './AdoptionQueue';
-import Register from './Register';
+//import Register from './Register';
 
 class PetsPage extends Component {
   render() {
     return (<>
 
-      <section className='row background'>
+      <section className='row background1'>
         <div className='columnC'>
           <DogDisplay>
           </DogDisplay>
@@ -20,12 +20,12 @@ class PetsPage extends Component {
         </div>
 
         <div className='columnD'>
-
-          {/* <AdoptionQueue></AdoptionQueue> */}
-          <Register/>
           <Link to='/'>
             <h1 className='pg2title'>Petful</h1>
           </Link>
+          <AdoptionQueue></AdoptionQueue>
+          {/* <Register/> */}
+          
         </div>
       </section>
 

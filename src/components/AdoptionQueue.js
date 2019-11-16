@@ -1,26 +1,64 @@
 import React, { Component } from 'react';
+import config from '../config.js';
+
 
 class AdoptionQueue extends Component {
   static defaultProps = { cats: [] };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      newAdopter: '',
+      error: ''
+    };
+  }
+
+  getFormValue = (e) => {
+    e.preventDefault();
+    let adopter = { full_name: e.target.fullName.value }
+    this.handlePostAdopter(adopter);
+  }
+
+  handlePostAdopter = (adopter) => {
+    let options = {
+      method: 'POST',
+      body: JSON.stringify(adopter),
+      headers: { "Content-Type": "application/json" }
+    };
+    fetch(`${config.REACT_APP_API_BASE}/user`, options)
+    .then(response => {
+      if(!response.ok) {
+        console.log('Error.');
+        throw new Error('Something went wrong');
+      }       
+      return response;
+    })
+    .then(response => response.json())
+    .then(data => {
+      const adopter = data;
+      this.setState({newAdopter: adopter});
+    })
+    .catch(err => console.log('Error with request'))
+  }
 
 
   render() {
 
     return (
       <div className='right-column2 adoptInfo'>
-        <h2 className='signupTitle'>How To Adopt</h2>
-        <p>The next in line to adopt: </p>
-        <p>Enter your name to be in the queue to adopt...</p>
-        <form>
-          <label for='firstName'>First name:&nbsp;
-            <input type='text' id='firstName' className='formBox' />
+        <h2 className='signupTitle'>You Can Adopt!</h2>
+        <p>Enter your name below to be added to the list to adopt.</p>
+
+        <form onSubmit = {e => {this.getFormValue(e)}}>
+          <label htmlFor='fullName'>Full Name:&#160;
+            <input type='text' id='fullName' className='formBox' name='fullName' />
           </label>
-          <br />
-          <label for='lastName'>Last name:&nbsp;
-            <input type='text' id='lastName' className='formBox' />
-          </label>
-          <button type='submit' className='petsBtn'>Add me to the queue!</button>
+          <button type='submit' className='petsBtn'>Sign Up!</button>
         </form>
+
+        <hr/>
+        <p><strong>Next up to adopt:</strong></p>
+
       </div>
     );
   }
