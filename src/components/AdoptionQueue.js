@@ -47,7 +47,7 @@ class AdoptionQueue extends Component {
     return (
       <div className='right-column2 adoptInfo'>
         <h2 className='signupTitle'>You Can Adopt!</h2>
-        <p>Enter your name below to be added to the list to adopt.</p>
+        <p>Enter your name here to be added to the list to adopt.</p>
 
         <form onSubmit = {e => {this.getFormValue(e)}}>
           <label htmlFor='fullName'>Full Name:&#160;
@@ -55,9 +55,11 @@ class AdoptionQueue extends Component {
           </label>
           <button type='submit' className='petsBtn'>Sign Up!</button>
         </form>
-
         <hr/>
+
+        <p>When it is your turn to adopt, your name will be displayed below.</p>
         <p><strong>Next up to adopt:</strong></p>
+        <p>...</p>
 
       </div>
     );
