@@ -11,18 +11,21 @@ class PetsPage extends Component {
     return (<>
 
       <section className='row background'>
-
         <div className='columnC'>
+          <DogDisplay>
+          </DogDisplay>
 
-        <DogDisplay></DogDisplay>
-        <CatDisplay></CatDisplay>
-
+          <CatDisplay>
+          </CatDisplay>
         </div>
 
         <div className='columnD'>
-          <h1 className='pg2title'>Petful</h1>
+
           {/* <AdoptionQueue></AdoptionQueue> */}
           <Register/>
+          <Link to='/'>
+            <h1 className='pg2title'>Petful</h1>
+          </Link>
         </div>
       </section>
 

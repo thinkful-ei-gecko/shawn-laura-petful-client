@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import config from '../config.js';
-import { Link } from 'react-router-dom';
 
 class CatDisplay extends Component {
-  static defaultProps = { cats: [] };
+  static defaultProps = { cat: [] };
 
   constructor(props) {
     super(props);
@@ -13,7 +12,26 @@ class CatDisplay extends Component {
     };
   }
 
-  componentDidMount(){
+  handleAdoptCat = () => {
+    let options = {
+      method: 'DELETE',
+      headers: { "Content-Type": "application/json" }
+    };
+    fetch(`${config.REACT_APP_API_BASE}/cat`, options)
+    .then(response => {
+      if(!response.ok) {
+        console.log('Error.');
+        throw new Error('Something went wrong'); //throw an error
+      }       
+      return response;
+    })
+    .then(response => response.json())
+    .catch(err => console.log('Error with request'))
+
+    this.displayNextCat();
+  }
+
+  displayNextCat(){
     fetch(`${config.REACT_APP_API_BASE}/cat`)
     .then(response => {
       if(!response.ok) {
@@ -30,6 +48,11 @@ class CatDisplay extends Component {
     .catch(err => {
       this.setState({ error: err.message });
     });
+
+  }
+
+  componentDidMount(){
+    this.displayNextCat();
   }
 
   render() {
@@ -54,11 +77,8 @@ class CatDisplay extends Component {
               <li><span className='statItem'>Story: </span>{cat.story}</li>
             </ul>
           </div>
-          <button type='submit' className='petsBtn smBtn adopt'>Adopt me!</button>
-          <div>
-            <button type='submit' className='petsBtn smBtn'>View previous</button>
-            <button type='submit' className='petsBtn smBtn'>View next</button>
-          </div>
+          <button type='submit' className='petsBtn smBtn adopt'
+            onClick={() => this.handleAdoptCat()} >Adopt me!</button>
         </div>
         <div className='columnF'>
         <img className='petImg' alt={cat.imageDescription} src={cat.imageURL} />
@@ -71,3 +91,11 @@ class CatDisplay extends Component {
 }
 
 export default CatDisplay;
+
+/* for future dev:
+
+          <div>
+            <button type='submit' className='petsBtn smBtn'>View previous</button>
+            <button type='submit' className='petsBtn smBtn'>View next</button>
+          </div>
+*/
