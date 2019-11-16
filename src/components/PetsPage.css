@@ -157,10 +157,10 @@
   font-weight: 600;
   background-color: rgba(146, 146, 146, 0.5);
   border: 2px solid rgb(197, 197, 197);
-  width: 55%;
+  width: 50%;
   margin: 12px auto;
   text-align: center;
-  padding: 6px;
+  padding: 3px;
 }
 
 .petsBtn:hover {
@@ -186,4 +186,9 @@
 }
 .next{
   background-color: rgba(177, 98, 98, 0.5);
+}
+.firstInLine{
+  font-style: italic;
+  font-size: 1.3rem;
+  line-height: 1.1rem;
 }
