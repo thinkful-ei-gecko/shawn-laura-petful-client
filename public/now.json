@@ -2,6 +2,11 @@
   "version": 2,
   "name": "PETFULv111",
   "alias": "PETFULv111",
+  "build": {
+    "env": {
+      "REACT_APP_API_BASE": "https://tranquil-reef-66333.herokuapp.com"
+    }
+  },
   "routes": [
     {
       "src": "^/static/(.*)",
