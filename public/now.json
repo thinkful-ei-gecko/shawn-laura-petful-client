@@ -4,7 +4,7 @@
   "alias": "PETFULv111",
   "build": {
     "env": {
-      "REACT_APP_API_BASE": "https://tranquil-reef-66333.herokuapp.com"
+      "REACT_APP_API_BASE": "https://shawn-laura-petful-server.herokuapp.com/api"
     }
   },
   "routes": [
