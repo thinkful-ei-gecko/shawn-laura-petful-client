@@ -3,13 +3,14 @@ import config from '../config.js';
 
 
 class AdoptionQueue extends Component {
-  static defaultProps = { cats: [] };
+  static defaultProps = { allAdopters: [] };
 
   constructor(props) {
     super(props);
     this.state = {
       newAdopter: '',
       nextToAdopt: '',
+      allAdopters: [],
       error: ''
     };
   }
@@ -17,6 +18,7 @@ class AdoptionQueue extends Component {
   getFormValue = (e) => {
     e.preventDefault();
     let adopter = { full_name: e.target.fullName.value }
+    e.target.reset();
     this.handlePostAdopter(adopter);
   }
 
@@ -38,13 +40,14 @@ class AdoptionQueue extends Component {
     .then(data => {
       const adopter = data;
       this.setState({newAdopter: adopter});
+      this.displayNextAdopter();
     })
     .catch(err => console.log('Error with request'))
   }
 
   handleSendToBackOfQueue = () => {
     let options = {
-      method: 'DELETE',
+      method: 'PATCH',
       headers: { "Content-Type": "application/json" }
     };
     fetch(`${config.REACT_APP_API_BASE}/user`, options)
@@ -61,6 +64,30 @@ class AdoptionQueue extends Component {
     this.displayNextAdopter();
   }
 
+  removeAdopterFromList(){
+    let options = {
+      method: 'DELETE',
+      headers: { "Content-Type": "application/json" }
+    };
+    fetch(`${config.REACT_APP_API_BASE}/user`, options)
+    .then(response => {
+      if(!response.ok) {
+        console.log('Error.');
+        throw new Error('Something went wrong'); //throw an error
+      }       
+      return response;
+    })
+    .then(response => response.json())
+    .then(data => {
+      const userLineup = data;
+      console.log(userLineup);
+      this.setState({allAdopters: userLineup});
+      this.setState({nextToAdopt: userLineup[0]});
+    })
+    .catch(err => console.log('Error with request'))
+
+  }
+
   displayNextAdopter(){
     fetch(`${config.REACT_APP_API_BASE}/user`)
     .then(response => {
@@ -72,13 +99,14 @@ class AdoptionQueue extends Component {
     })
     .then(response => response.json())
     .then(data => {
-      const user = data;
-      this.setState({nextToAdopt: user});
+      const userLineup = data;
+      console.log(userLineup);
+      this.setState({allAdopters: userLineup});
+      this.setState({nextToAdopt: userLineup[0]});
     })
     .catch(err => {
       this.setState({ error: err.message });
     });
-
   }
 
   componentDidMount(){
@@ -91,10 +119,12 @@ class AdoptionQueue extends Component {
     const nextUp = this.state.nextToAdopt;
     console.log(nextUp);
 
+    const adopterQueue = this.state.allAdopters.map(person => <li>{person}</li>);
+
     return (
       <div className='right-column2 adoptInfo'>
         <h2 className='signupTitle'>You Can Adopt!</h2>
-        <p>Enter your name to be added to the list to adopt.</p>
+        <p className='lineUpP'>Add your name to the list.</p>
 
         <form onSubmit = {e => {this.getFormValue(e)}}>
           <label htmlFor='fullName'>Full Name:&#160;
@@ -104,15 +134,19 @@ class AdoptionQueue extends Component {
         </form>
         <hr/>
 
-        <p>The next person in line to adopt will be displayed below.</p>
         <div className='nextUp'>
-          <p><strong>Next up to adopt:</strong></p>
+          <p className='nextPerson'><strong>Next up to adopt:</strong></p>
           <p className='firstInLine'>{nextUp}</p>
-        </div>
-        When adopter's turn is over:
-        <button type='submit' className='petsBtn smBtn next'
-            onClick={() => this.handleSendToBackOfQueue()} >Remove from queue</button>
+          <p className='lineUpInfo'><strong>TO ADOPT: </strong>Click "Adopt me" to remove the animal from the list, THEN "Leave" to remove yourself from the queue.</p>
+          <p className='lineUpInfo'><strong>TO WAIT: </strong>To wait for a different animal, get back in line.</p>
+          <button type='button' className='petsBtn smBtn next'
+            onClick={() => this.removeAdopterFromList()} >Leave</button>
+          <button type='button' className='petsBtn smBtn next'
+            onClick={() => this.handleSendToBackOfQueue()} >Go to end of queue</button>
 
+        </div>
+        <p className='queueTitle'>Waiting list:</p>
+        <ol className='queue'>{adopterQueue}</ol>
       </div>
     );
   }

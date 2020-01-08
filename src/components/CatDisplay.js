@@ -77,7 +77,7 @@ class CatDisplay extends Component {
               <li><span className='statItem'>Story: </span>{cat.story}</li>
             </ul>
           </div>
-          <button type='submit' className='petsBtn smBtn adopt'
+          <button type='button' className='petsBtn smBtn adopt'
             onClick={() => this.handleAdoptCat()} >Adopt me!</button>
         </div>
         <div className='columnF'>

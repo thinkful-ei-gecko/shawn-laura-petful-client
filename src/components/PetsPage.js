@@ -4,7 +4,6 @@ import './PetsPage.css';
 import DogDisplay from './DogDisplay';
 import CatDisplay from './CatDisplay';
 import AdoptionQueue from './AdoptionQueue';
-//import Register from './Register';
 
 class PetsPage extends Component {
   render() {
@@ -23,9 +22,7 @@ class PetsPage extends Component {
           <Link to='/'>
             <h1 className='pg2title'>Petful</h1>
           </Link>
-          <AdoptionQueue></AdoptionQueue>
-          {/* <Register/> */}
-          
+          <AdoptionQueue></AdoptionQueue>          
         </div>
       </section>
 

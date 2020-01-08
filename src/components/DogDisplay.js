@@ -76,7 +76,7 @@ class DogDisplay extends Component {
               <li><span className='statItem'>Story: </span>{dog.story}</li>
             </ul>
           </div>
-          <button type='submit' className='petsBtn smBtn adopt'
+          <button type='button' className='petsBtn smBtn adopt'
             onClick={() => this.handleAdoptDog()}>Adopt me!</button>
         </div>
         <div className='columnF'>
