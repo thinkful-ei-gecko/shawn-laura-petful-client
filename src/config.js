@@ -1,7 +1,7 @@
 const config = {
   REACT_APP_API_BASE:
     process.env.NODE_ENV === 'production'
-      ? 'https://tranquil-reef-66333.herokuapp.com'
+      ? 'https://shawn-laura-petful-server.herokuapp.com'
       : 'http://localhost:8000/api'
 }
 
