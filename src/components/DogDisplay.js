@@ -12,25 +12,6 @@ class DogDisplay extends Component {
     };
   }
 
-  handleAdoptDog = () => {
-    let options = {
-      method: 'DELETE',
-      headers: { "Content-Type": "application/json" }
-    };
-    fetch(`${config.REACT_APP_API_BASE}/dog`, options)
-    .then(response => {
-      if(!response.ok) {
-        console.log('Error.');
-        throw new Error('Something went wrong'); //throw an error
-      }       
-      return response;
-    })
-    .then(response => response.json())
-    .catch(err => console.log('Error with request'))
-
-    this.displayNextDog();
-  }
-
   displayNextDog(){
     fetch(`${config.REACT_APP_API_BASE}/dog`)
     .then(response => {
@@ -48,15 +29,48 @@ class DogDisplay extends Component {
     .catch(err => {
       this.setState({ error: err.message });
     });
-
   }
 
   componentDidMount(){
+   // this.props.verifyTurn();
     this.displayNextDog();
+  }
+
+  handleAdoptDog = () => {
+    let options = {
+      method: 'DELETE',
+      headers: { "Content-Type": "application/json" }
+    };
+    fetch(`${config.REACT_APP_API_BASE}/dog`, options)
+    .then(response => {
+      if(!response.ok) {
+        console.log('Error.');
+        throw new Error('Something went wrong'); //throw an error
+      }       
+      return response;
+    })
+    .then(response => response.json())
+    .then(data => {
+      const dog = data;
+      this.setState({dog: dog});
+    })
+    .catch(err => console.log('Error with request'))
+  }
+
+  handleClickAdopt = () => {
+    let status = this.props.turn;
+    console.log(status);
+    if (status === true) {
+      this.handleAdoptDog();
+    }
+    else {
+      console.log('not adopting');
+    }
   }
 
   render() {
     const dog = this.state.dog;
+    const turnMessage = this.props.currentUser ? this.props.message : '';
 
     return (
       <div className='left-column2'>
@@ -77,7 +91,8 @@ class DogDisplay extends Component {
             </ul>
           </div>
           <button type='button' className='petsBtn smBtn adopt'
-            onClick={() => this.handleAdoptDog()}>Adopt me!</button>
+            onClick={() => this.handleClickAdopt()} >ADOPT!</button>
+            <p role="alert" className="alert">{turnMessage}</p>
         </div>
         <div className='columnF'>
           <img className='petImg' alt={dog.imageDescription} src={dog.imageURL} />

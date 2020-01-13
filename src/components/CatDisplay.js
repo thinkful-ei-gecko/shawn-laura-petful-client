@@ -12,6 +12,31 @@ class CatDisplay extends Component {
     };
   }
 
+  displayNextCat(){
+    fetch(`${config.REACT_APP_API_BASE}/cat`)
+    .then(response => {
+      if(!response.ok) {
+        console.log('Error.');
+        throw new Error('Something went wrong'); //throw an error
+      }       
+      return response;
+    })
+    .then(response => response.json())
+    .then(data => {
+      const cat = data;
+      //console.log(cat);
+      this.setState({cat: cat});
+    })
+    .catch(err => {
+      this.setState({ error: err.message });
+    });
+  }
+
+  componentDidMount(){
+    //this.props.verifyTurn();
+    this.displayNextCat();
+  }
+
   handleAdoptCat = () => {
     let options = {
       method: 'DELETE',
@@ -26,38 +51,27 @@ class CatDisplay extends Component {
       return response;
     })
     .then(response => response.json())
-    .catch(err => console.log('Error with request'))
-
-    this.displayNextCat();
-  }
-
-  displayNextCat(){
-    fetch(`${config.REACT_APP_API_BASE}/cat`)
-    .then(response => {
-      if(!response.ok) {
-        console.log('Error.');
-        throw new Error('Something went wrong'); //throw an error
-      }       
-      return response;
-    })
-    .then(response => response.json())
     .then(data => {
       const cat = data;
       this.setState({cat: cat});
     })
-    .catch(err => {
-      this.setState({ error: err.message });
-    });
-
+    .catch(err => console.log('Error with request'))
   }
 
-  componentDidMount(){
-    this.displayNextCat();
+  handleClickAdopt = () => {
+    let status = this.props.turn;
+    console.log(status);
+    if (status === true) {
+      this.handleAdoptCat();
+    }
+    else {
+      console.log('not adopting');
+    }
   }
 
   render() {
-
     const cat = this.state.cat;
+    const turnMessage = this.props.currentUser ? this.props.message : '';
 
     return (
       <div className='left-column2'>
@@ -78,7 +92,8 @@ class CatDisplay extends Component {
             </ul>
           </div>
           <button type='button' className='petsBtn smBtn adopt'
-            onClick={() => this.handleAdoptCat()} >Adopt me!</button>
+            onClick={() => this.handleClickAdopt()} >ADOPT!</button>
+            <p role="alert" className="alert">{turnMessage}</p>
         </div>
         <div className='columnF'>
         <img className='petImg' alt={cat.imageDescription} src={cat.imageURL} />

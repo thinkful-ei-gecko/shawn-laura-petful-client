@@ -8,9 +8,6 @@ class AdoptionQueue extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      newAdopter: '',
-      nextToAdopt: '',
-      allAdopters: [],
       error: ''
     };
   }
@@ -39,7 +36,8 @@ class AdoptionQueue extends Component {
     .then(response => response.json())
     .then(data => {
       const adopter = data;
-      this.setState({newAdopter: adopter});
+      this.props.trackUser(adopter);
+      this.props.verifyTurn();
       this.displayNextAdopter();
     })
     .catch(err => console.log('Error with request'))
@@ -59,9 +57,14 @@ class AdoptionQueue extends Component {
       return response;
     })
     .then(response => response.json())
+    .then(data => {
+      const userLineup = data;
+      console.log(userLineup);
+      this.props.trackAdopters(userLineup);
+      this.props.trackNextAdopter(userLineup[0]);
+      this.props.verifyTurn();
+    })
     .catch(err => console.log('Error with request'))
-
-    this.displayNextAdopter();
   }
 
   removeAdopterFromList(){
@@ -79,13 +82,18 @@ class AdoptionQueue extends Component {
     })
     .then(response => response.json())
     .then(data => {
-      const userLineup = data;
-      console.log(userLineup);
-      this.setState({allAdopters: userLineup});
-      this.setState({nextToAdopt: userLineup[0]});
+      let deletedUser = data[0];
+      let userLineup = data[1];
+//      console.log(userLineup);
+//      console.log(deletedUser);
+      if (this.props.currentUser === deletedUser){
+        this.props.trackUser('');
+      }
+      this.props.trackAdopters(userLineup);
+      this.props.trackNextAdopter(userLineup[0]);
+      this.props.verifyTurn();
     })
     .catch(err => console.log('Error with request'))
-
   }
 
   displayNextAdopter(){
@@ -100,9 +108,10 @@ class AdoptionQueue extends Component {
     .then(response => response.json())
     .then(data => {
       const userLineup = data;
-      console.log(userLineup);
-      this.setState({allAdopters: userLineup});
-      this.setState({nextToAdopt: userLineup[0]});
+      //console.log(userLineup);
+      this.props.trackAdopters(userLineup);
+      this.props.trackNextAdopter(userLineup[0]);
+      this.props.verifyTurn();
     })
     .catch(err => {
       this.setState({ error: err.message });
@@ -113,13 +122,10 @@ class AdoptionQueue extends Component {
     this.displayNextAdopter();
   }
 
-
   render() {
 
-    const nextUp = this.state.nextToAdopt;
-    console.log(nextUp);
-
-    const adopterQueue = this.state.allAdopters.map(person => <li>{person}</li>);
+    const nextUp = this.props.currentAdopter;
+    const adopterQueue = this.props.adoptersList.map((person, idx) => <li key={idx} >{person}</li>);
 
     return (
       <div className='right-column2 adoptInfo'>
@@ -137,8 +143,8 @@ class AdoptionQueue extends Component {
         <div className='nextUp'>
           <p className='nextPerson'><strong>Next up to adopt:</strong></p>
           <p className='firstInLine'>{nextUp}</p>
-          <p className='lineUpInfo'><strong>TO ADOPT: </strong>Click "Adopt me" to remove the animal from the list, THEN "Leave" to remove yourself from the queue.</p>
-          <p className='lineUpInfo'><strong>TO WAIT: </strong>To wait for a different animal, get back in line.</p>
+          <p className='lineUpInfo'><strong>TO ADOPT: </strong>Click "ADOPT" to take the animal off the list, THEN "Leave" to remove yourself from the queue.</p>
+          <p className='lineUpInfo'><strong>TO WAIT: </strong>To wait for a different animal, go to the end of the line.</p>
           <button type='button' className='petsBtn smBtn next'
             onClick={() => this.removeAdopterFromList()} >Leave</button>
           <button type='button' className='petsBtn smBtn next'
